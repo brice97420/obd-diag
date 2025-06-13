@@ -1,0 +1,21 @@
+
+name: Build EXE
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install pyinstaller pyserial
+      - run: pyinstaller --onefile --windowed main.py
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: dist/main.exe
